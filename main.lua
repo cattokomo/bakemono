@@ -1,9 +1,24 @@
+jit.on()
+
 package.path = package.path .. ";" .. table.concat({
   "?.luac", "?/init.luac",
   "?.lua", "?/init.lua",
   "bm/vendor/?.luac", "bm/vendor/?/init.luac",
   "bm/vendor/?.lua", "bm/vendor/?/init.lua"
 }, ";")
+
+if raylua.loadfile then
+	package.loaders[3] = function(name)
+  	for path in package.path:gmatch "([^;]+);?" do
+      name = name:gsub("%.", "/")
+      path = path:gsub("?", name)
+
+      local content, err = raylua.loadfile(path)
+      if content then
+      	local tmp = os.getenv("TMP") or os.getenv("TMP")
+    end
+  end
+end
 
 if arg[0]:match("raylua_s$") then
 	local arg0 = table.remove(arg, 1)

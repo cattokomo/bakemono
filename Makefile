@@ -5,18 +5,23 @@ endif
 LUA_IN= $(shell find bm/ -type f -name '*.lua')
 LUAC_OUT= $(patsubst %.lua,%.luac,$(LUA_IN))
 
-all: $(LUAC_OUT)
+BIN_ZIP= bakemono.zip
+BIN= bakemono gbakemono
+
+all: $(BIN)
 
 $(LUAC_OUT): $(LUA_IN)
 
-%.luac: %.lua
-	LUA_PATH=./raylib-lua/luajit/src/?.lua ./raylib-lua/luajit/src/luajit -b $< $@
+$(BIN_ZIP): $(LUAC_OUT) $(LUA_IN) main.lua
+	zip bakemono.zip $^
 
-build: $(LUAC_OUT)
-	zip bakemono.zip $(shell find bm) main.lua
-	./raylib-lua/raylua_r bakemono.zip
+$(BIN): $(BIN_ZIP)
+	raylib-lua/raylua_r bakemono.zip
 	mv bakemono_out bakemono$(EXT)
 	cp bakemono$(EXT) gbakemono$(EXT)
+
+%.luac: %.lua
+	LUA_PATH=./raylib-lua/luajit/src/?.lua ./raylib-lua/luajit/src/luajit -b $< $@
 
 clean:
 	rm -f $(LUAC_OUT)
