@@ -15,13 +15,6 @@ local ffi = require("ffi")
 local prog
 local argv = {}
 
-if #arg == 0 then
-	io.stderr:write(arg[0].." <directory/zipfile> [args...]\n")
-	io.stderr:write("A Visual Novel engine on top of Raylib\n")
-	io.stderr:flush()
-	os.exit(1)
-end
-
 if #arg > 0 then
 	prog = table.remove(arg, 1)
 end
