@@ -1,0 +1,5 @@
+*.luac
+*.exe
+/bakemono
+/gbakemono
+/bakemono.zip

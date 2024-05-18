@@ -1,12 +1,16 @@
 package.path = package.path .. ";" .. table.concat({
-  "src/?.lua",
-  "src/vendor/?.lua", "./src/vendor/?/init.lua"
+  "?.luac", "?/init.luac",
+  "?.lua", "?/init.lua",
+  "bm/vendor/?.luac", "bm/vendor/?/init.luac",
+  "bm/vendor/?.lua", "bm/vendor/?/init.lua"
 }, ";")
 
 if arg[0]:match("raylua_s$") then
 	local arg0 = table.remove(arg, 1)
 	arg[0] = arg0
 end
+
+local ffi = require("ffi")
 
 local prog
 local argv = {}
@@ -26,4 +30,4 @@ for _, v in ipairs(arg) do
 	argv[#argv+1] = v
 end
 
-require(rl.GetFileName(arg[0]):match("^gbakemono") and "bm.gui_init" or "bm.init")(prog, argv)
+require(ffi.string(rl.GetFileName(arg[0])):match("^gbakemono") and "bm.gui_init" or "bm.init")(prog, argv)
