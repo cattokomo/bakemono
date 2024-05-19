@@ -1,3 +1,5 @@
+local ffi = require("ffi")
+
 local screenWidth = 800
 local screenHeight = 450
 
@@ -6,8 +8,12 @@ local colors = {
 	rl.SKYBLUE,
 }
 
+local svg_icon = rl.LoadImageSvg("bm/assets/icon.svg", 256, 256)
+local win_icon = rl.LoadImage("bm/assets/48.png")
+
 rl.InitWindow(screenWidth, screenHeight, "Bakemono (Blep!)")
 rl.SetTargetFPS(60)
+rl.SetWindowIcon(win_icon)
 
 local i = 1
 while not rl.WindowShouldClose() do
@@ -25,3 +31,6 @@ while not rl.WindowShouldClose() do
 end
 
 rl.CloseWindow()
+
+rl.UnloadImage(svg_icon)
+rl.UnloadImage(win_icon)
