@@ -1,22 +1,23 @@
-local screenWidth, screenHeight = 800, 450
+local fs = require("bm.utils.fs")
+local moonscript = require("moonscript.base")
 
 return function(prog, argv)
-	rl.InitWindow(screenWidth, screenHeight, "Bakemono [Blep!]")
-	rl.SetTargetFPS(60)
+	if not prog then
+		require("bm.nogame")
+	else
+		local f
+		if rl.FileExists(fs.join(prog, "main.moon")) then
+    	f = assert(moonscript.loadfile(fs.join(prog, "main.moon")))
+    elseif rl.FileExists(fs.join(prog, "main.lua")) then
+    	f = assert(loadfile(fs.join(prog, "main.lua")))
+    end
 
-	local text = "Blep!"
-	local i = 0
-	while not rl.WindowShouldClose() do
-		do rl.BeginDrawing()
-		  rl.ClearBackground(rl.WHITE)
-	  	rl.DrawText(text:sub(1, i),screenWidth/2-i-25, screenHeight/2, 20, rl.SKYBLUE)
-		 	rl.WaitTime(.25)
-		 	i = i + 1
-		 	if i > #text then
-		 		i = 0
-		 	end
-		rl.EndDrawing() end
-	end
-
-	rl.CloseWindow()
+  	do
+  		local arg = argv
+  		local package = package
+  		package.path = "./?.lua;./?/init.lua"
+  		moonscript.insert_loader()
+  		f() --[[ TODO: Handle game script ]]
+  	end
+  end
 end
