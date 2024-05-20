@@ -12,7 +12,7 @@ all: $(BIN)
 
 $(LUAC_OUT): $(LUA_IN)
 
-$(BIN_ZIP): $(LUAC_OUT) $(LUA_IN) main.lua
+$(BIN_ZIP): $(LUAC_OUT) $(shell find bm) main.lua
 	zip bakemono.zip $^
 
 $(BIN): $(BIN_ZIP)

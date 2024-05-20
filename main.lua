@@ -13,6 +13,18 @@ package.path = package.path
 		"bm/vendor/?/init.lua",
 	}, ";")
 
+if not raylua.loadfile then
+	function raylua.loadfile(path)
+  	local f, err = io.open(path, "rb")
+  	if not f and err then
+    	return false, err
+    end
+    local content = f:read("*a")
+    f:close()
+    return content
+  end
+end
+
 require("lulpeg"):register()
 
 if arg[0]:match("raylua_s$") then
