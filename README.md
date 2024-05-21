@@ -7,3 +7,4 @@ A Visual Novel engine on top of Raylib
 - [ ] Clean up the code and add assertations
 - [ ] Port to Android via Raymob (might be possible with modifications to raylib-lua)
 - [ ] Use an Immediate mode GUI library for GUI stuff, considering raygui, ImGUI, Nuklear...
+- [ ] Port to HTML5 platform, need a big tweak on the script to work.
