@@ -22,8 +22,19 @@ while not rl.WindowShouldClose() do
 	do
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.RAYWHITE)
-		rl.DrawTexture(icon_texture, screen_width/2 - icon_texture.width/2, screen_height/2 - icon_texture.height/2 - 60, rl.BLACK)
-		rl.DrawText(txt, screen_width/2 - rl.MeasureText(txt, txt_size)/2, screen_height/2 + 40, txt_size, rl.DARKGRAY)
+		rl.DrawTexture(
+			icon_texture,
+			screen_width / 2 - icon_texture.width / 2,
+			screen_height / 2 - icon_texture.height / 2 - 60,
+			rl.BLACK
+		)
+		rl.DrawText(
+			txt,
+			screen_width / 2 - rl.MeasureText(txt, txt_size) / 2,
+			screen_height / 2 + 40,
+			txt_size,
+			rl.DARKGRAY
+		)
 	end
 	rl.EndDrawing()
 end

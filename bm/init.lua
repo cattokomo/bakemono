@@ -16,7 +16,7 @@ return function(prog, argv)
 	elseif rl.FileExists(fs.join(prog, "main.lua")) then
 		f = assert(loadfile(fs.join(prog, "main.lua")))
 	else
-	rl.TraceLog(rl.LOG_INFO, "Can't find any game script, running nogame...")
+		rl.TraceLog(rl.LOG_INFO, "Can't find any game script, running nogame...")
 		require("bm.nogame")
 		os.exit(true, true)
 	end

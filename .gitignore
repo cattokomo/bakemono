@@ -1,5 +1,9 @@
 *.luac
 *.exe
+*.so
+*.dll
+*.dylib
 /bakemono
 /gbakemono
 /bakemono.zip
+/raylua

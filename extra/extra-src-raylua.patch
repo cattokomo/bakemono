@@ -1,0 +1,44 @@
+diff --git a/makefile b/makefile
+index 8065244..8e4fbb4 100644
+--- a/makefile
++++ b/makefile
+@@ -6,8 +6,8 @@ LUA ?= luajit/src/luajit
+ 
+ WINDRES ?= windres
+ 
+-CFLAGS += -Iluajit/src -Iraylib/src -Iraygui/src -Iphysac/src
+-LDFLAGS += luajit/src/libluajit.a raylib/src/libraylib.a
++CFLAGS += -Wno-incompatible-pointer-types -Iluajit/src -Iraylib/src -Iraygui/src -Iphysac/src
++LDFLAGS += luajit/src/libluajit.a raylib/src/libraylib.a ../deps/luv/build/libluv.a ../deps/luv/build/deps/libuv/libuv.a
+ 
+ MODULES := raymath rlgl gestures physac raygui rcamera
+ 
+diff --git a/src/raylua_e.c b/src/raylua_e.c
+index 987bc76..2eefa6e 100644
+--- a/src/raylua_e.c
++++ b/src/raylua_e.c
+@@ -28,6 +28,8 @@
+ #include "raylua.h"
+ #include "lib/miniz.h"
+ 
++int luaopen_luv(lua_State *L);
++
+ FILE *raylua_open_self(const char *argv0);
+ 
+ #ifndef RAYLUA_NO_BUILDER
+@@ -175,6 +177,15 @@ int main(int argc, const char **argv)
+ 
+   luaL_openlibs(L);
+ 
++  lua_getglobal(L, "package");
++  lua_getfield(L, -1, "loaded");
++
++  lua_pushcfunction(L, luaopen_luv);
++  lua_call(L, 0, 1);
++  lua_setfield(L, -2, "luv");
++
++  lua_remove(L, -1);
++
+   /* Populate arg. */
+   lua_newtable(L);
+ 

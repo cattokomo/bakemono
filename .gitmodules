@@ -1,3 +1,6 @@
 [submodule "raylib-lua"]
 	path = raylib-lua
 	url = https://github.com/TSnake41/raylib-lua
+[submodule "deps/luv"]
+	path = deps/luv
+	url = https://github.com/luvit/luv
