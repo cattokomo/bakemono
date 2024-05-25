@@ -1,5 +1,5 @@
 diff --git a/makefile b/makefile
-index 8065244..8e4fbb4 100644
+index 8065244..60b2442 100644
 --- a/makefile
 +++ b/makefile
 @@ -6,8 +6,8 @@ LUA ?= luajit/src/luajit
@@ -9,24 +9,25 @@ index 8065244..8e4fbb4 100644
 -CFLAGS += -Iluajit/src -Iraylib/src -Iraygui/src -Iphysac/src
 -LDFLAGS += luajit/src/libluajit.a raylib/src/libraylib.a
 +CFLAGS += -Wno-incompatible-pointer-types -Iluajit/src -Iraylib/src -Iraygui/src -Iphysac/src
-+LDFLAGS += luajit/src/libluajit.a raylib/src/libraylib.a ../deps/luv/build/libluv.a ../deps/luv/build/deps/libuv/libuv.a
++LDFLAGS += luajit/src/libluajit.a raylib/src/libraylib.a ../deps/luv/build/libluv.a ../deps/luv/build/deps/libuv/libuv.a ../deps/lua-miniz/liblminiz.a
  
  MODULES := raymath rlgl gestures physac raygui rcamera
  
 diff --git a/src/raylua_e.c b/src/raylua_e.c
-index 987bc76..2eefa6e 100644
+index 987bc76..99522a4 100644
 --- a/src/raylua_e.c
 +++ b/src/raylua_e.c
-@@ -28,6 +28,8 @@
+@@ -28,6 +28,9 @@
  #include "raylua.h"
  #include "lib/miniz.h"
  
 +int luaopen_luv(lua_State *L);
++int luaopen_miniz(lua_State* L);
 +
  FILE *raylua_open_self(const char *argv0);
  
  #ifndef RAYLUA_NO_BUILDER
-@@ -175,6 +177,15 @@ int main(int argc, const char **argv)
+@@ -175,6 +178,21 @@ int main(int argc, const char **argv)
  
    luaL_openlibs(L);
  
@@ -38,6 +39,12 @@ index 987bc76..2eefa6e 100644
 +  lua_setfield(L, -2, "luv");
 +
 +  lua_remove(L, -1);
++
++  lua_getfield(L, -1, "preload");
++  lua_remove(L, -2);
++
++  lua_pushcfunction(L, luaopen_miniz);
++  lua_setfield(L, -2, "miniz");
 +
    /* Populate arg. */
    lua_newtable(L);

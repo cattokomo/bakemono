@@ -16,15 +16,21 @@ BIN_ZIP= bakemono.zip
 BIN= bakemono gbakemono
 
 LUV_DEPS= deps/luv/build/libluv.a deps/luv/build/deps/libuv/libuv.a
+LMINIZ_DEPS= deps/lua-miniz/liblminiz.a
 
 all: $(BIN)
 
 $(LUV_DEPS):
 	cd deps/luv && \
-		LUA_BUILD_TYPE=System WITH_LUA_ENGINE=LuaJIT BUILD_STATIC_LIBS=On make
+		WITH_LUA_ENGINE=LuaJIT BUILD_STATIC_LIBS=On make
 
-raylua: $(LUV_DEPS)
-	patch --merge -p1 -d raylib-lua <extra/extra-src-raylua.patch
+$(LMINIZ_DEPS):
+	cd deps/lua-miniz && \
+		$(CC) -c -I../../raylib-lua/luajit/src -I../../raylib-lua/src/lib lminiz.c -o lminiz.o && \
+		ar rcs liblminiz.a lminiz.o
+
+raylua: $(LUV_DEPS) $(LMINIZ_DEPS)
+	-patch --forward -p1 -d raylib-lua <extra/extra-src-raylua.patch
 	make -C raylib-lua
 	cp raylib-lua/raylua_r raylua
 
