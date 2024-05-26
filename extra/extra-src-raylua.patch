@@ -9,7 +9,7 @@ index 8065244..60b2442 100644
 -CFLAGS += -Iluajit/src -Iraylib/src -Iraygui/src -Iphysac/src
 -LDFLAGS += luajit/src/libluajit.a raylib/src/libraylib.a
 +CFLAGS += -Wno-incompatible-pointer-types -Iluajit/src -Iraylib/src -Iraygui/src -Iphysac/src
-+LDFLAGS += luajit/src/libluajit.a raylib/src/libraylib.a ../deps/luv/build/libluv.a ../deps/luv/build/deps/libuv/libuv.a ../deps/lua-miniz/liblminiz.a
++LDFLAGS += luajit/src/libluajit.a raylib/src/libraylib.a ../deps/luv/build/libluv.a ../deps/luv/build/deps/libuv/libuv.a ../deps/lminiz/liblminiz.a
  
  MODULES := raymath rlgl gestures physac raygui rcamera
  
