@@ -40,6 +40,8 @@ end
 
 local ffi = require("ffi")
 local fs = require("bm.utils.fs")
+local errors = require("moonscript.errors")
+local util = require("moonscript.util")
 
 local prog = "."
 local argv = {}
@@ -58,6 +60,11 @@ xpcall(function()
 		argv
 	)
 end, function(err)
+		if type(err) == "table" and err.moon then
+    	local truncated = errors.truncate_traceback(util.trim(err[1]))
+    	err = errors.rewrite_traceback(truncated, err)
+    end
+
 		if type(err) ~= "string" then
     	err = "error message is a "..type(err)
     end
@@ -76,7 +83,7 @@ end, function(err)
 			do
 				rl.BeginDrawing()
     		rl.ClearBackground(rl.RAYWHITE)
-    		rl.DrawTextEx(rl.GetFontDefault(), err, { 2, 1 }, 19, 2, rl.BLACK)
+    		rl.DrawTextEx(rl.GetFontDefault(), err, { 2, 1 }, 15, 2, rl.BLACK)
     		rl.EndDrawing()
     	end
     end

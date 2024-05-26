@@ -3,6 +3,8 @@
 *.so
 *.dll
 *.dylib
+*.a
+*.o
 /bakemono
 /gbakemono
 /bakemono.zip
