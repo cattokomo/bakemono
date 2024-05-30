@@ -61,18 +61,27 @@ xpcall(function()
 	)
 end, function(err)
 		if type(err) == "table" and err.moon then
-    	local truncated = errors.truncate_traceback(util.trim(err[1]))
-    	err = errors.rewrite_traceback(truncated, err)
+			err = err[1]
+		elseif type(err) == "table" and err.moon and err.execute then
+			local truncated = errors.truncate_traceback(util.trim(err[2]))
+			local rewritten = errors.rewrite_traceback(truncated, err[1])
+
+			if rewritten then
+				err = rewritten
+			else
+				err = err[1] .. "\n" .. util.trim(err[2])
+			end
+		else
+	    err = debug.traceback(err, 2)
     end
 
 		if type(err) ~= "string" then
     	err = "error message is a "..type(err)
     end
-    err = debug.traceback(err, 2)
 
-		io.stderr:write("== ERROR WHILE RUNNING BAKEMONO =======================\n")
+		io.stderr:write("== ERROR WHILE RUNNING BAKEMONO ======================================\n")
 		io.stderr:write(err)
-		io.stderr:write("\n=======================================================\n")
+		io.stderr:write("\n======================================================================\n")
 		io.stderr:flush()
 
 		if not rl.IsWindowReady() then
